@@ -6,6 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define BLDG_TYPE_RESIDENTIAL 1
+#define BLDG_TYPE_COMMERCIAL 2
+#define BLDG_TYPE_INDUSTRIAL 3
+
 typedef struct {
 	uint8_t		crime;
 	uint8_t		pollution;
@@ -46,13 +50,16 @@ typedef struct {
 	uint8_t		skin;
 	uint8_t		capacity;
 	uint8_t		residents;
-	easiness_t	easiness;	
+	easiness_t	ease;	
 } BLDG_RESIDENTIAL;
 
 
 /* FUNCTION DECLARATIONS */
 
 BLDG_COMMERCIAL* create_commercial_building(unsigned int id, bool fw_random);
+BLDG_RESIDENTIAL* create_residential_building(unsigned int id, bool fw_random);
+BLDG_INDUSTRIAL* create_industrial_building(unsigned int id, bool fw_random);
+
 void print_easiness(easiness_t* easiness);
 void print_commercial_data(BLDG_COMMERCIAL* bldg);
 void set_default_easiness(easiness_t* easiness);

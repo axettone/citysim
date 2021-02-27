@@ -2,9 +2,10 @@
 #define ALLOCATOR_H
 
 #include <stdlib.h>
-#include <lists.h>
+#include "lists.h"
 #include <stdbool.h>
+#include "buildings.h"
 
-cslist_t* allocate_n_commercials(size_t n, bool fw_random);
+cslist_t* allocate_n_buildings(size_t n, int building_type, bool fw_random);
 
 #endif

@@ -27,6 +27,9 @@ void init_economy() {
 	game.rci_taxes.residential_l = DEFAULT_TAX_RATE;
 	game.rci_taxes.residential_m = DEFAULT_TAX_RATE;
 	game.rci_taxes.residential_h = DEFAULT_TAX_RATE;
+
+    game.economy_stats.budget = DEFAULT_INITIAL_BUDGET;
+    game.economy_stats.GDP = 0;
 }
 
 void print_taxes () {
@@ -56,4 +59,25 @@ int compute_commercial_pressure(cslist_t *commercials) {
         cursor = cursor->next;
     }
     return pressure;
+}
+
+int compute_commercial_gdp(cslist_t *commercials) {
+    cslist_t* cursor = commercials;
+    int gdp = 0;
+    while(cursor != NULL) {
+        BLDG_COMMERCIAL* bldg = (BLDG_COMMERCIAL*)(cursor->item);
+        gdp += (int)(bldg->employees) * GDP_AVG_COMM_EMP;
+        cursor = cursor->next;
+    }
+    return gdp;
+}
+int compute_industrial_gdp(cslist_t *industrials) {
+    cslist_t* cursor = industrials;
+    int gdp = 0;
+    while(cursor != NULL) {
+        BLDG_INDUSTRIAL* bldg = (BLDG_INDUSTRIAL*)(cursor->item);
+        gdp += (int)(bldg->employees) * GDP_AVG_INDU_EMP;
+        cursor = cursor->next;
+    }
+    return gdp;
 }

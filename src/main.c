@@ -7,8 +7,8 @@
 #include "economy.h"
 #include "lists.h"
 #include "allocator.h"
-
 #include "game.h"
+#include "csvexport.h"
 
 /** GLOBAL STUFF **/
 game_t game;
@@ -19,6 +19,16 @@ void print_header() {
 }
 
 void the_loop() {
+    game.year++;
+    int comm_gdp = compute_commercial_gdp(game.commercials);
+    int indu_gdp = compute_industrial_gdp(game.industrials);
+    game.economy_stats.GDP = comm_gdp + indu_gdp;
+    
+    game.economy_stats.tax_income = comm_gdp/100 * game.rci_taxes.commercial_m
+                                +   indu_gdp/100 * game.rci_taxes.industrial_m;
+
+    game.economy_stats.budget += game.economy_stats.tax_income;    
+
     printf("Executed main loop.\n");
 }
 
@@ -29,14 +39,17 @@ int main(int argc, char** argv) {
     time_t t;
     size_t n = 100;
     int choice;
-    unsigned int loop_n = 0;
 
     srand((unsigned) time(&t));
+
+    game.year = 2000;
 	print_header();
     init_economy();
 	print_taxes();
     
-    game.commercials = allocate_n_commercials(n, true);
+    game.residentials = allocate_n_buildings(n, BLDG_TYPE_RESIDENTIAL, true);
+    game.commercials = allocate_n_buildings(n, BLDG_TYPE_COMMERCIAL, true);
+    game.industrials = allocate_n_buildings(n, BLDG_TYPE_INDUSTRIAL, true);
     cslist_t* cursor = game.commercials;
 /*    for(size_t i=0;i<n;i++) {
         BLDG_COMMERCIAL* item = (BLDG_COMMERCIAL*)cursor->item;        
@@ -48,7 +61,8 @@ int main(int argc, char** argv) {
     do {
         sleep(1);
         the_loop();
-        printf("Loop: %u\n", loop_n++);
+        export_to_csv("./data.csv");
+        printf("Year: %u\n", game.year);
         
         printf("Press enter to continue, q to quit.\n");
         choice = getchar();
