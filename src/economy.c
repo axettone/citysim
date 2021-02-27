@@ -8,13 +8,13 @@ void init_economy() {
 	game.rci_demand.commercial_m = RCI_DEMAND_COMMERCIAL_M;
 	game.rci_demand.commercial_h = RCI_DEMAND_COMMERCIAL_H;
 
-	game.rci_demand.industrial_l = 10;
-	game.rci_demand.industrial_m = 5;
-	game.rci_demand.industrial_h = 1;
+	game.rci_demand.industrial_l = RCI_DEMAND_INDUSTRIAL_L;
+	game.rci_demand.industrial_m = RCI_DEMAND_INDUSTRIAL_M
+	game.rci_demand.industrial_h = RCI_DEMAND_INDUSTRIAL_H;
 
-	game.rci_demand.residential_l = 10;
-	game.rci_demand.residential_m = 5;
-	game.rci_demand.residential_h = 1;
+	game.rci_demand.residential_l = RCI_DEMAND_RESIDENTIAL_L;
+	game.rci_demand.residential_m = RCI_DEMAND_RESIDENTIAL_M;
+	game.rci_demand.residential_h = RCI_DEMAND_RESIDENTIAL_H;
 	
 	game.rci_taxes.commercial_l = DEFAULT_TAX_RATE;
 	game.rci_taxes.commercial_m = DEFAULT_TAX_RATE;
