@@ -21,6 +21,6 @@ typedef struct {
 
 } GOVERNMENT_BUDGET;
 
-int government_costs();
+int government_costs(int GDP);
 
 #endif

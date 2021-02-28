@@ -18,6 +18,10 @@ typedef struct {
     ECONOMY_STATS economy_stats;
     uint16_t year;
 
+    // These should be _l, _m, _h
+    unsigned int population;
+    unsigned int workers;
+
 } game_t;
 
 extern game_t game;

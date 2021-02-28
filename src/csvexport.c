@@ -10,10 +10,22 @@ void export_to_csv(char *filename) {
     char* row;
 
     int length;
-    length = snprintf(NULL, 0, "%u,%d,%d\n", game.year, game.economy_stats.budget, game.economy_stats.GDP);
+    const char *csv_format = "%u,%d,%d,%u\n";
+    length = snprintf(NULL, 0, csv_format,
+        game.year,
+        game.economy_stats.budget,
+        game.economy_stats.GDP,
+        game.population
+    );
 
     row = (char*)malloc(sizeof(char) * length);
-    snprintf(row, length+1,"%u,%d,%d\n", game.year, game.economy_stats.budget, game.economy_stats.GDP);
+    snprintf(row, length+1,csv_format,
+        game.year,
+        game.economy_stats.budget,
+        game.economy_stats.GDP,
+        game.population
+    );
+
     ssize_t written = write(fd, row, length);
     free(row);
     close(fd);

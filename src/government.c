@@ -1,6 +1,6 @@
 #include "government.h"
 
-int government_costs() {
+int government_costs(int GDP) {
     //game game.economy_stats.GDP
-    return 0;
+    return GDP*0.33; //Simplicistic model: state costs 33% of GDP
 }

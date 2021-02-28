@@ -23,8 +23,39 @@ void print_header() {
   printf("        \\/          \\/            \\/          \\/ \n");
 }
 
+void computing_population() {
+    cslist_t* cursor = game.residentials;
+    game.population = 0;
+    while(cursor != NULL) {
+        BLDG_RESIDENTIAL* bldg = (BLDG_RESIDENTIAL*)(cursor->item);
+        game.population += (unsigned int)(bldg->residents);
+        cursor = cursor->next;
+    }
+}
+
+void computing_workers() {
+    game.workers = 0;
+    cslist_t* cursor = game.commercials;
+    
+    while(cursor != NULL) {
+        BLDG_COMMERCIAL* bldg = (BLDG_COMMERCIAL*)(cursor->item);
+        game.workers += (unsigned int)(bldg->employees);
+        cursor = cursor->next;
+    }
+
+    cursor = game.industrials;
+
+    while(cursor != NULL) {
+        BLDG_INDUSTRIAL* bldg = (BLDG_INDUSTRIAL*)(cursor->item);
+        game.workers += (unsigned int)(bldg->employees);
+        cursor = cursor->next;
+    }
+}
+
 void the_loop() {
     game.year++;
+
+    /** GDP AND TAXES ON BUSINESS **/
     int comm_gdp = compute_commercial_gdp(game.commercials);
     int indu_gdp = compute_industrial_gdp(game.industrials);
     game.economy_stats.GDP = comm_gdp + indu_gdp;
@@ -32,7 +63,14 @@ void the_loop() {
     game.economy_stats.tax_income = comm_gdp/100 * game.rci_taxes.commercial_m
                                 +   indu_gdp/100 * game.rci_taxes.industrial_m;
 
-    game.economy_stats.budget += game.economy_stats.tax_income;    
+    game.economy_stats.budget += game.economy_stats.tax_income;
+    game.economy_stats.budget -= government_costs(game.economy_stats.GDP);
+
+    /** ECONOMY PRESSURES  **/
+
+    //Computing population
+    computing_population();
+    computing_workers();
 
     printf("Executed main loop.\n");
 }
