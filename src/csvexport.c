@@ -6,10 +6,20 @@ void export_to_csv(char *filename) {
         printf("Cannot open %s for writing.", filename);
         exit(2);
     }
-
+    
+    int length;
+    struct stat statbuf;
+    ssize_t written;
+    fstat(fd, &statbuf);
     char* row;
 
-    int length;
+    if(statbuf.st_size == 0) {
+        //If the CSV is new, print the header row
+        const char* header = "Year,budget,GDP,population\n";        
+        written = write(fd,header,strlen(header));
+    }
+    
+
     const char *csv_format = "%u,%d,%d,%u\n";
     length = snprintf(NULL, 0, csv_format,
         game.year,
@@ -26,7 +36,7 @@ void export_to_csv(char *filename) {
         game.population
     );
 
-    ssize_t written = write(fd, row, length);
+    written = write(fd, row, length);
     free(row);
     close(fd);
 }
