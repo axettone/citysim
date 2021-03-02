@@ -7,3 +7,6 @@ To run the main loop, launch the main executable src/citysim.
 At this stage I'm working on the main loop and try to figure out
 some kind of algorithm to process the city economy, but I'm also
 creating and refining the data structures.
+
+Prerequisites:
+- libblas / GNU Scientific Libraries

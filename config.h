@@ -1,6 +1,15 @@
 /* config.h.  Generated from config.h.in by configure.  */
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define to 1 if you have the `gsl' library (-lgsl). */
+#define HAVE_LIBGSL 1
+
+/* Define to 1 if you have the `gslcblas' library (-lgslcblas). */
+#define HAVE_LIBGSLCBLAS 1
+
+/* Define to 1 if you have the `m' library (-lm). */
+#define HAVE_LIBM 1
+
 /* Name of package */
 #define PACKAGE "citysim"
 

@@ -9,6 +9,7 @@
 #include "allocator.h"
 #include "game.h"
 #include "csvexport.h"
+#include "random.h"
 
 /** GLOBAL STUFF **/
 game_t game;
@@ -52,6 +53,8 @@ void computing_workers() {
     }
 }
 
+
+
 void the_loop() {
     game.year++;
 
@@ -68,10 +71,30 @@ void the_loop() {
 
     /** ECONOMY PRESSURES  **/
 
-    //Computing population
+    //Assumptions:
+    //1) closed world (people don't go elsewhere and don't come from the outside)
+    //2) Let's start with a little bit of unemployment (100 residential vs 40 + 20)
+    
     computing_population();
     computing_workers();
 
+    int primary_goods_pressure  = game.population * 0.20;
+    //this should be higher for medium and higher wealth citizends
+    int luxury_goods_pressure   = game.population * 0.05;
+
+    //workers need products
+    primary_goods_pressure += game.workers * 0.20;
+    luxury_goods_pressure += game.workers * 0.01;
+
+    int trading_pressure = primary_goods_pressure * 1 + luxury_goods_pressure * 2;
+
+    printf("Population:\t%u\nWorkers:\t%u\nUnemployment:%.2f%%\n", game.population,game.workers,100-100*((float)game.workers/game.population));
+
+    printf("Total industrial pressure:\t%d\nTotal trading pressure:\t\t%d\n",
+        primary_goods_pressure+luxury_goods_pressure,
+        trading_pressure
+    );
+    
     printf("Executed main loop.\n");
 }
 
@@ -83,6 +106,7 @@ int main(int argc, char** argv) {
     size_t n = 100;
     int choice;
 
+    init_random();
     srand((unsigned) time(&t));
 
     game.year = 2000;
@@ -91,8 +115,8 @@ int main(int argc, char** argv) {
 	print_taxes();
     
     game.residentials = allocate_n_buildings(n, BLDG_TYPE_RESIDENTIAL, true);
-    game.commercials = allocate_n_buildings(n, BLDG_TYPE_COMMERCIAL, true);
-    game.industrials = allocate_n_buildings(n, BLDG_TYPE_INDUSTRIAL, true);
+    game.commercials = allocate_n_buildings(50, BLDG_TYPE_COMMERCIAL, true);
+    game.industrials = allocate_n_buildings(20, BLDG_TYPE_INDUSTRIAL, true);
     cslist_t* cursor = game.commercials;
 /*    for(size_t i=0;i<n;i++) {
         BLDG_COMMERCIAL* item = (BLDG_COMMERCIAL*)cursor->item;        
@@ -113,5 +137,7 @@ int main(int argc, char** argv) {
 
     printf("Commercial pressure: %d\n", compute_commercial_pressure(game.commercials));
 	printf("Low Residential Demand: %d\n", game.rci_demand.residential_l);
+
+    teardown_random();
 	return 0;
 }

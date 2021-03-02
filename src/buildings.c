@@ -1,4 +1,5 @@
 #include "buildings.h"
+#include "random.h"
 
 void set_default_easiness(easiness_t* easiness){
   easiness->crime = 20;
@@ -26,6 +27,8 @@ BLDG_COMMERCIAL* create_commercial_building(unsigned int id, bool fw_random) {
 	BLDG_COMMERCIAL* ret = (BLDG_COMMERCIAL*)malloc(sizeof(BLDG_COMMERCIAL));
 	ret->id = id;
 	set_default_easiness(&ret->ease);
+
+    
 	
     if(fw_random){
         ret->skin = 1+rand() %(UINT8_MAX - 1);        
