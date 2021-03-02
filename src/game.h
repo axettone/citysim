@@ -20,7 +20,8 @@ typedef struct {
 
     // These should be _l, _m, _h
     unsigned int population;
-    unsigned int workers;
+    unsigned int ind_workers;
+    unsigned int com_workers;
 
 } game_t;
 

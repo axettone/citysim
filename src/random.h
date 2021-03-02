@@ -17,4 +17,5 @@ void init_random();
 void teardown_random();
 
 double random_gaussian(const double sigma, const double mu);
+double random_exponential(const double mu);
 #endif

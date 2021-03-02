@@ -35,12 +35,13 @@ void computing_population() {
 }
 
 void computing_workers() {
-    game.workers = 0;
+    game.com_workers = 0;
+    game.ind_workers = 0;
     cslist_t* cursor = game.commercials;
     
     while(cursor != NULL) {
         BLDG_COMMERCIAL* bldg = (BLDG_COMMERCIAL*)(cursor->item);
-        game.workers += (unsigned int)(bldg->employees);
+        game.com_workers += (unsigned int)(bldg->employees);
         cursor = cursor->next;
     }
 
@@ -48,7 +49,7 @@ void computing_workers() {
 
     while(cursor != NULL) {
         BLDG_INDUSTRIAL* bldg = (BLDG_INDUSTRIAL*)(cursor->item);
-        game.workers += (unsigned int)(bldg->employees);
+        game.ind_workers += (unsigned int)(bldg->employees);
         cursor = cursor->next;
     }
 }
@@ -83,18 +84,34 @@ void the_loop() {
     int luxury_goods_pressure   = game.population * 0.05;
 
     //workers need products
-    primary_goods_pressure += game.workers * 0.20;
-    luxury_goods_pressure += game.workers * 0.01;
+    primary_goods_pressure += (game.ind_workers + game.com_workers) * 0.20;
+    luxury_goods_pressure += (game.ind_workers + game.com_workers) * 0.01;
 
     int trading_pressure = primary_goods_pressure * 1 + luxury_goods_pressure * 2;
 
-    printf("Population:\t%u\nWorkers:\t%u\nUnemployment:%.2f%%\n", game.population,game.workers,100-100*((float)game.workers/game.population));
+    printf("Population:\t%u\nInd.Workers:\t%u\nCom.Workers:\t%u\nUnemployment:%.2f%%\n",
+        game.population,
+        game.ind_workers,
+        game.com_workers,
+        100-100*((float)(game.ind_workers + game.com_workers)/game.population)
+    );
 
     printf("Total industrial pressure:\t%d\nTotal trading pressure:\t\t%d\n",
         primary_goods_pressure+luxury_goods_pressure,
         trading_pressure
     );
-    
+
+    // Pressure effects
+
+    //This should be a random picking, not a sequential picking.
+
+    cslist_t* cursor = game.commercials;
+    while(cursor != NULL) {
+        BLDG_COMMERCIAL* bldg = (BLDG_COMMERCIAL*)(cursor->item);
+        int delta = bldg->capacity - bldg->employees;
+
+        cursor = cursor->next;
+    }
     printf("Executed main loop.\n");
 }
 

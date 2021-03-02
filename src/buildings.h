@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define BLDG_TYPE_RESIDENTIAL 1
 #define BLDG_TYPE_COMMERCIAL 2

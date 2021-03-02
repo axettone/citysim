@@ -32,8 +32,8 @@ BLDG_COMMERCIAL* create_commercial_building(unsigned int id, bool fw_random) {
 	
     if(fw_random){
         ret->skin = 1+rand() %(UINT8_MAX - 1);        
-        ret->capacity = 1+rand() %(UINT8_MAX - 1);        
-        ret->employees = ret->capacity - (rand() % (ret->capacity));
+        ret->capacity =  ceil(random_exponential(0.666)*25);
+        ret->employees = ceil((1-random_exponential(1)) * ret->capacity);
     }
 
 	if (ret == NULL) {
@@ -50,8 +50,8 @@ BLDG_RESIDENTIAL* create_residential_building(unsigned int id, bool fw_random) {
 	
     if(fw_random){
         ret->skin = 1+rand() %(UINT8_MAX - 1);        
-        ret->capacity = 1+rand() %(UINT8_MAX - 1);        
-        ret->residents = ret->capacity - (rand() % (ret->capacity));
+        ret->capacity =  ceil(random_exponential(0.5)*50);
+        ret->residents = ceil((1-random_exponential(1))* ret->capacity);
     }
 
 	if (ret == NULL) {
@@ -68,8 +68,8 @@ BLDG_INDUSTRIAL* create_industrial_building(unsigned int id, bool fw_random) {
 	
     if(fw_random){
         ret->skin = 1+rand() %(UINT8_MAX - 1);        
-        ret->capacity = 1+rand() %(UINT8_MAX - 1);        
-        ret->employees = ret->capacity - (rand() % (ret->capacity));
+        ret->capacity =  ceil(random_exponential(0.5)*500);
+        ret->employees = ceil((1-random_exponential(1))* ret->capacity);
     }
 
 	if (ret == NULL) {

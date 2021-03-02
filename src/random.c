@@ -12,5 +12,9 @@ void teardown_random() {
 }
 
 double random_gaussian(const double sigma, const double mu) {
-    return gsl_ran_gaussian (rng_status.r, sigma) + mu;
+    return gsl_ran_gaussian(rng_status.r, sigma) + mu;
+}
+
+double random_exponential(const double mu) {
+    return gsl_ran_exponential(rng_status.r, mu);
 }
