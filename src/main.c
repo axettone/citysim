@@ -14,6 +14,8 @@
 /** GLOBAL STUFF **/
 game_t game;
 
+#define START_WITH_N_COMMERCIALS 50
+
 void print_header() {
   printf("%s\n", PACKAGE_STRING);
   printf("_________ .__  __           _________.__         \n");
@@ -106,10 +108,11 @@ void the_loop() {
     //This should be a random picking, not a sequential picking.
 
     cslist_t* cursor = game.commercials;
+    int distrib_pressure = trading_pressure / START_WITH_N_COMMERCIALS;
     while(cursor != NULL) {
         BLDG_COMMERCIAL* bldg = (BLDG_COMMERCIAL*)(cursor->item);
         int delta = bldg->capacity - bldg->employees;
-
+        //bldg->employees += random_gaussian(delta, distrib_pressure*delta);
         cursor = cursor->next;
     }
     printf("Executed main loop.\n");
@@ -132,7 +135,7 @@ int main(int argc, char** argv) {
 	print_taxes();
     
     game.residentials = allocate_n_buildings(n, BLDG_TYPE_RESIDENTIAL, true);
-    game.commercials = allocate_n_buildings(50, BLDG_TYPE_COMMERCIAL, true);
+    game.commercials = allocate_n_buildings(START_WITH_N_COMMERCIALS, BLDG_TYPE_COMMERCIAL, true);
     game.industrials = allocate_n_buildings(20, BLDG_TYPE_INDUSTRIAL, true);
     cslist_t* cursor = game.commercials;
 /*    for(size_t i=0;i<n;i++) {
