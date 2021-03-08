@@ -3,6 +3,7 @@
 #include <config.h>
 #include <unistd.h>
 #include <time.h>
+#include <math.h>
 #include "buildings.h"
 #include "economy.h"
 #include "lists.h"
@@ -56,6 +57,12 @@ void computing_workers() {
     }
 }
 
+int sign(int x) {
+ if(x>=0){
+     return 1;
+ }
+ return -1;
+}
 
 
 void the_loop() {
@@ -108,11 +115,12 @@ void the_loop() {
     //This should be a random picking, not a sequential picking.
 
     cslist_t* cursor = game.commercials;
-    int distrib_pressure = trading_pressure / START_WITH_N_COMMERCIALS;
+    
     while(cursor != NULL) {
+        int distrib_pressure = (trading_pressure - game.com_workers) / START_WITH_N_COMMERCIALS;
         BLDG_COMMERCIAL* bldg = (BLDG_COMMERCIAL*)(cursor->item);
         int delta = bldg->capacity - bldg->employees;
-        //bldg->employees += random_gaussian(delta, distrib_pressure*delta);
+        bldg->employees += round(random_gaussian(1.0, sign(distrib_pressure)));
         cursor = cursor->next;
     }
     printf("Executed main loop.\n");
@@ -152,7 +160,7 @@ int main(int argc, char** argv) {
         printf("Year: %u\n", game.year);
         
         printf("Press enter to continue, q to quit.\n");
-        choice = getchar();
+        //choice = getchar();
     } while (choice != 'q');
 
     printf("Commercial pressure: %d\n", compute_commercial_pressure(game.commercials));

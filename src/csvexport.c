@@ -15,16 +15,17 @@ void export_to_csv(char *filename) {
 
     if(statbuf.st_size == 0) {
         //If the CSV is new, print the header row
-        const char* header = "Year,budget,GDP,population\n";        
+        const char* header = "Year,budget,GDP,unemployment,population\n";        
         written = write(fd,header,strlen(header));
     }
     
 
-    const char *csv_format = "%u,%d,%d,%u\n";
+    const char *csv_format = "%u,%d,%d,%.2f,%u\n";
     length = snprintf(NULL, 0, csv_format,
         game.year,
         game.economy_stats.budget,
         game.economy_stats.GDP,
+        100-100*((float)(game.ind_workers + game.com_workers)/game.population),
         game.population
     );
 
