@@ -10,6 +10,7 @@
 #include "game.h"
 #include "csvexport.h"
 #include "random.h"
+#include "economymodels.h"
 
 /** GLOBAL STUFF **/
 game_t game;
