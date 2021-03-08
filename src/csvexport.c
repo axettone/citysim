@@ -1,7 +1,7 @@
 #include "csvexport.h"
 
 void export_to_csv(char *filename) {
-    int fd = open(filename, O_WRONLY|O_APPEND|O_CREAT, 0775);
+    int fd = open(filename, O_WRONLY|O_APPEND|O_CREAT, 0664);
     if(fd<0) {
         printf("Cannot open %s for writing.", filename);
         exit(2);

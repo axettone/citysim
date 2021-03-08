@@ -118,10 +118,17 @@ void the_loop() {
     cslist_t* cursor = game.commercials;
     
     while(cursor != NULL) {
-        int distrib_pressure = (trading_pressure - game.com_workers) / START_WITH_N_COMMERCIALS;
+        double normalized_pressure = (pow(trading_pressure,2) - pow(game.com_workers,2))/(pow(trading_pressure,2) + pow(game.com_workers,2));
         BLDG_COMMERCIAL* bldg = (BLDG_COMMERCIAL*)(cursor->item);
-        int delta = bldg->capacity - bldg->employees;
-        bldg->employees += round(random_gaussian(1.0, sign(distrib_pressure)));
+        double d_delta = concurrency_pressure(normalized_pressure);
+        printf("ð:%.2f\tn_p:%.2f\n", d_delta, normalized_pressure);
+        int delta = round(d_delta);
+       
+        bldg->employees += delta;
+        game.com_workers+=delta;
+        primary_goods_pressure = (game.ind_workers + game.com_workers) * 0.20 + game.population * 0.20;
+        luxury_goods_pressure = (game.ind_workers + game.com_workers) * 0.01 + game.population * 0.05;
+        trading_pressure = primary_goods_pressure * 1 + luxury_goods_pressure * 2;
         cursor = cursor->next;
     }
     printf("Executed main loop.\n");
